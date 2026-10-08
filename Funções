@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Funções: Missão Inteligência Artificial</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      color: #eef6ff;
+      background: linear-gradient(135deg, #10172a, #173b5e);
+    }
+
+    main {
+      width: min(650px, 100%);
+      padding: 28px;
+      border: 1px solid #3e6688;
+      border-radius: 16px;
+      background: #162b40;
+      box-shadow: 0 12px 35px #0005;
+    }
+
+    h1 {
+      color: #6ee7f9;
+    }
+
+    #mensagem {
+      min-height: 90px;
+      line-height: 1.6;
+    }
+
+    #opcoes {
+      display: grid;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 12px;
+      border: 0;
+      border-radius: 8px;
+      background: #6ee7f9;
+      color: #10243a;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #a5f3fc;
+    }
+
+    #progresso {
+      color: #b9d7ee;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <h1>🤖 Missão: Inteligência Artificial</h1>
+    <p id="progresso"></p>
+    <p id="mensagem"></p>
+    <div id="opcoes"></div>
+  </main>
+
+  <script>
+    const mensagem = document.querySelector("#mensagem");
+    const opcoes = document.querySelector("#opcoes");
+    const progresso = document.querySelector("#progresso");
+
+    let etapa = 0;
+
+    // Esta função mostra uma pergunta e suas opções.
+    function mostrarEtapa() {
+      progresso.textContent = `Etapa ${etapa + 1} de 3`;
+
+      const missoes = [
+        {
+          pergunta: "A IA encontrou muitos dados para aprender. O que deve fazer primeiro?",
+          respostas: [
+            { texto: "Organizar e analisar os dados", correta: true },
+            { texto: "Ignorar todos os dados", correta: false }
+          ]
+        },
+        {
+          pergunta: "O sistema precisa reconhecer imagens de gatos. Como pode aprender?",
+          respostas: [
+            { texto: "Analisando exemplos de imagens identificadas", correta: true },
+            { texto: "Escolhendo respostas aleatoriamente", correta: false }
+          ]
+        },
+        {
+          pergunta: "A IA apresentou um resultado. Qual é uma atitude responsável?",
+          respostas: [
+            { texto: "Verificar o resultado e considerar possíveis erros", correta: true },
+            { texto: "Aceitar tudo sem conferir", correta: false }
+          ]
+        }
+      ];
+
+      if (etapa >= missoes.length) {
+        finalizarMissao();
+        return;
+      }
+
+      const missao = missoes[etapa];
+      mensagem.textContent = missao.pergunta;
+      opcoes.replaceChildren();
+
+      missao.respostas.forEach(resposta => {
+        const botao = document.createElement("button");
+        botao.textContent = resposta.texto;
+
+        botao.addEventListener("click", function() {
+          verificarResposta(resposta.correta);
+        });
+
+        opcoes.appendChild(botao);
+      });
+    }
+
+    // Esta função verifica a resposta escolhida.
+    function verificarResposta(correta) {
+      if (correta) {
+        mensagem.textContent = "Correto! A missão está avançando.";
+        etapa++;
+        setTimeout(mostrarEtapa, 1000);
+      } else {
+        mensagem.textContent = "Ainda não. Pense novamente e escolha outra opção.";
+      }
+    }
+
+    // Esta função termina a missão e permite recomeçar.
+    function finalizarMissao() {
+      progresso.textContent = "Missão concluída";
+      mensagem.textContent =
+        "Parabéns! Você completou a missão e aprendeu que a IA usa dados, identifica padrões e precisa ser usada com responsabilidade.";
+
+      opcoes.replaceChildren();
+
+      const botao = document.createElement("button");
+      botao.textContent = "Jogar novamente";
+      botao.addEventListener("click", reiniciarMissao);
+      opcoes.appendChild(botao);
+    }
+
+    function reiniciarMissao() {
+      etapa = 0;
+      mostrarEtapa();
+    }
+
+    mostrarEtapa();
+  </script>
+</body>
+</html>
